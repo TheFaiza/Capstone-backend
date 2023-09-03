@@ -1,24 +1,33 @@
 const knex = require('knex')(require('../knexfile'));
 
 const loginUser = (req, res) => {
-    if (!req.body.name || !req.body.email || !req.body.password) {
+    if (!req.params.email || !req.params.password || !req.params.user_type) {
         return res
             .status(400)
             .send("Please provide all the required data");
     }
 
-    knex('users')
-        .insert(req.body)
-        .then((result) => {
-            return knex("users")
-                .where({ id: result[0] })
+    knex("users")
+        .select ("users.*")
+        .where({ 'users.email': req.params.email, 'users.password': req.params.password, 'users.user_type': req.params.user_type  })
+        .then((adminUser) => {
+
+            if (adminUser.length === 0) {
+                return res
+                    .status(404)
+                    .json({ message: `admin User with ID: ${req.params.email} not found` });
+            }
+
+            const adminData= adminUser[0];
+
+            res.status(200).json(adminData);
         })
-        .then((createdAdmin) => {
-            res.status(201).json(createdAdmin);
-        })
-        .catch(() => {
-            res.status(500).json({ message: "Unable to create new admin user" });
-        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                message: `Unable to retrieve admin for item with Id: ${req.params.id}`,
+            });
+        });
 
 }
 
