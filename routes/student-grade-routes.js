@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const studentGradeController = require('../controllers/studentGrade-controller');
+const studentGradeController = require('../controllers/student-grade-controller');
 
 router.route('/').get(studentGradeController.studentGradeList).post(studentGradeController.addStudentGrade);
 router.route('/:id').get(studentGradeController.findOne).patch(studentGradeController.update);

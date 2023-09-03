@@ -5,18 +5,29 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
 
 // Add your routes here
 
-const inventoryListRoutes = require("./routes/inventorylist-routes");
-const warehouseListRoutes = require("./routes/warehouselist-routes");
+const adminListRoutes = require("./routes/admin-routes");
+const studentListRoutes = require("./routes/student-routes");
+const courseListRoutes = require("./routes/course-routes");
+const gradeListRoutes = require("./routes/grade-routes");
+const studentCourseRoutes = require("./routes/student-course-routes");
+const studentGradeRoutes = require("./routes/student-grade-routes");
+const loginRoutes = require("./routes/login-routes");
 
-app.use('/inventory', inventoryListRoutes);
-app.use('/warehouse',warehouseListRoutes);
+app.use('/adminListRoutes', adminListRoutes);
+app.use('/studentListRoutes', studentListRoutes);
+app.use('/courseListRoutes', courseListRoutes);
+app.use('/gradeListRoutes', gradeListRoutes);
+app.use('/studentCourseRoutes', studentCourseRoutes);
+app.use('/studentGradeRoutes', studentGradeRoutes);
+
+app.use('/loginRoutes', loginRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
