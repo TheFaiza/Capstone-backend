@@ -98,10 +98,33 @@ const deleteCourse = (req, res) => {
         });
 }
 
+const assignedCourses = (req, res) => {
+    if (!req.body.student_id || !req.body.course_id) {
+        return res
+            .status(400)
+            .send("Please provide all the required data");
+    }
+
+    knex('student_course')
+        .insert(req.body)
+        .then((result) => {
+            return knex("student_course")
+                .where({ id: result[0] })
+        })
+        .then((createdStudentCourse) => {
+            res.status(201).json(createdStudentCourse);
+        })
+        .catch(() => {
+            res.status(500).json({ message: "Unable to create new course" });
+        })
+
+}
+
 module.exports = {
     courseList,
     addCourse,
     findOne,
     update,
-    deleteCourse
+    deleteCourse,
+    assignedCourses
 };
