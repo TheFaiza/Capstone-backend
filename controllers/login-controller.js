@@ -1,7 +1,12 @@
+const { json } = require('express');
+
 const knex = require('knex')(require('../knexfile'));
 
 const loginUser = (req, res) => {
-    if (!req.params.email || !req.params.password || !req.params.user_type) {
+
+    console.log('hello m here --- 0000');
+
+    if (!req.query.email || !req.query.password || !req.query.user_type) {
         return res
             .status(400)
             .send("Please provide all the required data");
@@ -9,16 +14,19 @@ const loginUser = (req, res) => {
 
     knex("users")
         .select ("users.*")
-        .where({ 'users.email': req.params.email, 'users.password': req.params.password, 'users.user_type': req.params.user_type  })
+        .where({ 'users.email': req.query.email, 'users.password': req.query.password, 'users.user_type': req.query.user_type  })
         .then((adminUser) => {
 
             if (adminUser.length === 0) {
                 return res
                     .status(404)
-                    .json({ message: `admin User with ID: ${req.params.email} not found` });
+                    .json({ message: `admin User with ID: ${req.query.email} not found` });
             }
 
             const adminData= adminUser[0];
+
+            
+    console.log('adminData --- 2222', JSON.stringify(adminData));
 
             res.status(200).json(adminData);
         })

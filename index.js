@@ -21,9 +21,9 @@ const studentGradeRoutes = require("./routes/student-grade-routes");
 const loginRoutes = require("./routes/login-routes");
 
 app.use('/adminListRoutes', adminListRoutes);
-app.use('/studentListRoutes', studentListRoutes);
-app.use('/courseListRoutes', courseListRoutes);
-app.use('/gradeListRoutes', gradeListRoutes);
+app.use('/studentRoutes', studentListRoutes);
+app.use('/courseRoutes', courseListRoutes);
+app.use('/gradeRoutes', gradeListRoutes);
 app.use('/studentCourseRoutes', studentCourseRoutes);
 app.use('/studentGradeRoutes', studentGradeRoutes);
 
