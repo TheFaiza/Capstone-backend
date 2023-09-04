@@ -3,6 +3,7 @@ const knex = require('knex')(require('../knexfile'));
 const studentList = (_req, res) => {
     knex('users')
     .select('users.*')
+    .where({ user_type: 'Student' })
     .orderBy('id')
     .then((data) =>{
         res.status(200).json(data);
