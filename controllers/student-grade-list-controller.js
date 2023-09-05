@@ -26,6 +26,34 @@ const getStudentGradeList = (req, res) => {
         });
 }
 
+
+const getStudentGradeListById = (req, res) => {
+    knex("student_grade")
+        .select ("student_grade.*", "users.name as student_name", "course.name as course_name", "course.code as course_code", "grade.name as student_grade")
+        .join('users', 'users.id', '=', 'student_grade.student_id')
+        .join('course', 'course.id', '=', 'student_grade.course_id')
+        .join('grade', 'grade.id', '=', 'student_grade.grade_id')
+        .where({ student_id: req.params.id })
+        .then((gradeResults) => {
+
+            if (gradeResults.length === 0) {
+                return res
+                    .status(404)
+                    .json({ message: `grade with ID: ${req.params.id} not found` });
+            }
+
+            const gradeData= gradeResults;
+
+            res.status(200).json(gradeData);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+                message: `Unable to retrieve grade with Id: ${req.params.id}`,
+            });
+        });
+}
+
 const addStudentGrade = (req, res) => {
     if (!req.body.student_id || !req.body.course_id || !req.body.grade_id) {
         return res
@@ -109,6 +137,7 @@ const deleteStudentGrade = (req, res) => {
 
 module.exports = {
     getStudentGradeList,
+    getStudentGradeListById,
     addStudentGrade,
     findOne,
     update,
