@@ -120,6 +120,7 @@ const assignedCourses = (req, res) => {
 
 }
 
+
 module.exports = {
     courseList,
     addCourse,
